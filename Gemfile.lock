@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/spaceappsatlanta/skymorph.git
-  revision: aa2584ad81a4b5fd35fdbfbb19bb0584de5be3b4
+  revision: 66211f4e3d22c4cf2057f54c3ccfb8217c4f0a54
   specs:
     skymorph (0.0.1)
       curb

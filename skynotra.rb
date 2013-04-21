@@ -12,9 +12,7 @@ module Skynotra
     end
 
     get '/observations/:target' do
-      target_request = SkyMorph::TargetRequest.new(params[:target])
-      target_response = target_request.fetch
-      observations = SkyMorph::ObservationTableParser.parse(target_response)
+      observations = SkyMorph::Observation.find(params[:target]).map(&:to_hash)
       deliver(observations)
     end
 
