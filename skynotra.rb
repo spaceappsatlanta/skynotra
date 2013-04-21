@@ -22,22 +22,24 @@ end
 
 module Skynotra
   class Application < Sinatra::Application
+    set :public_folder, 'public'
+
     get '/' do
-      'Hello world'
+      slim :index
     end
 
-    get '/observations/:target' do
+    get '/observations.json' do
       content_type :json
-      cache request.path do
+      cache "observations:#{params[:target]}" do
         observations = SkyMorph::Observation.find(params[:target]).map(&:to_hash)
         JSON.dump(observations)
       end
     end
 
-    get '/images/:key.json' do
+    get '/images.json' do
       content_type :json
-      cache request.path do
-        image_url = get_image_url(params[:key])
+      cache "images:#{params[:keys]}" do
+        image_url = get_image_url(params[:keys])
         JSON.dump({ image_url: image_url })
       end
     end
