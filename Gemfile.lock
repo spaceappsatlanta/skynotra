@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:spaceappsatlanta/skymorph.git
+  remote: git://github.com/spaceappsatlanta/skymorph.git
   revision: aa2584ad81a4b5fd35fdbfbb19bb0584de5be3b4
   specs:
     skymorph (0.0.1)
