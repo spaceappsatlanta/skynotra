@@ -9,7 +9,12 @@ require 'uri'
 Bundler.require if defined?(Bundler)
 
 before do
-  $redis = Redis.new
+  $redis = if redistogo_url = ENV["REDISTOGO_URL"]
+    uri = URI.parse redistogo_url
+    Redis.new host: uri.host, port: uri.port, password: uri.password
+  else
+    Redis.new
+  end
   $s3    = Fog::Storage.new({
     provider:              'AWS', 
     aws_access_key_id:     ENV['AWS_ACCESS_KEY_ID'], 
