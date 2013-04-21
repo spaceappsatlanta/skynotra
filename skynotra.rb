@@ -30,7 +30,7 @@ module Skynotra
       content_type :json
       cache request.path do
         observations = SkyMorph::Observation.find(params[:target]).map(&:to_hash)
-        JSON.dump observations
+        JSON.dump(observations)
       end
     end
 
@@ -38,7 +38,7 @@ module Skynotra
       content_type :json
       cache request.path do
         image_url = get_image_url(params[:key])
-        JSON.dump { image_url: image_url }
+        JSON.dump({ image_url: image_url })
       end
     end
 
@@ -51,10 +51,7 @@ module Skynotra
     private
 
     def get_image_url(key)
-      image_request = SkyMorph::ImageRequest.new(params[:key])
-      image_response = image_request.fetch
-      image_parser = SkyMorph::ImageParser.new
-      image_parser.parse_html(image_response)
+      SkyMorph::Image.find(key).first.path
     end
   end
 end

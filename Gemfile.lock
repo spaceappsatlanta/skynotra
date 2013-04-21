@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/spaceappsatlanta/skymorph.git
-  revision: 245ddb8bea8569d888daac00007f9284259dbd76
+  revision: f604cc10713e42bc724c014ca6c6fa922e460405
   specs:
     skymorph (0.0.1)
       curb
@@ -16,14 +16,14 @@ GEM
     descendants_tracker (0.0.1)
     method_source (0.8.1)
     nokogiri (1.5.9)
-    pry (0.9.12)
+    pry (0.9.12.1)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
     rack (1.5.2)
     rack-protection (1.5.0)
       rack
-    redis (3.0.2)
+    redis (3.0.3)
     sinatra (1.4.2)
       rack (~> 1.5, >= 1.5.2)
       rack-protection (~> 1.4)
