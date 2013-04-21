@@ -7,17 +7,19 @@ Bundler.require if defined?(Bundler)
 
 module Skynotra
   class Application < Sinatra::Application
+    set :public_folder, 'public'
+
     get '/' do
-      'Hello world'
+      slim :index
     end
 
-    get '/observations/?:target?' do
+    get '/observations.json' do
       observations = SkyMorph::Observation.find(params[:target]).map(&:to_hash)
       deliver(observations)
     end
 
-    get '/images/:key.json' do
-      image_url = get_image_url(params[:key])
+    get '/images.json' do
+      image_url = get_image_url(params[:keys])
       deliver({image_url: image_url})
     end
 
