@@ -11,7 +11,7 @@ module Skynotra
       'Hello world'
     end
 
-    get '/observations/:target' do
+    get '/observations/?:target?' do
       observations = SkyMorph::Observation.find(params[:target]).map(&:to_hash)
       deliver(observations)
     end
