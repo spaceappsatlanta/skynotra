@@ -1,4 +1,6 @@
 require 'bundler'
+require 'digest/sha1'
+require 'fog'
 require 'json'
 require 'net/http'
 require 'redis'
@@ -8,6 +10,12 @@ Bundler.require if defined?(Bundler)
 
 before do
   $redis = Redis.new
+  $s3    = Fog::Storage.new({
+    provider:              'AWS', 
+    aws_access_key_id:     ENV['AWS_ACCESS_KEY_ID'], 
+    aws_secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
+  })
+  $s3_dir = $s3.directories.create key: 'skynotra', public: true
 end
 
 def cache key, &block
@@ -44,10 +52,23 @@ module Skynotra
       end
     end
 
-    get '/images/:key.gif' do
-      content_type :gif
-      image_url = URI.parse(get_image_url(params[:key]))
-      Net::HTTP.get_response(image_url).body
+    get '/images.gif' do
+      sha = Digest::SHA1.hexdigest(params[:keys])
+      file = $s3_dir.files.get(sha) || begin
+        puts "Downloading image ..."
+        image_url = URI.parse(get_image_url(params[:keys]))
+        image = Net::HTTP.get_response(image_url).body
+
+        # Cache image in S3
+        s3_file = $s3_dir.files.new({
+          key:    sha,
+          body:   image,
+          public: true
+        })
+        s3_file.save
+        s3_file
+      end
+      redirect file.public_url
     end
 
     private
